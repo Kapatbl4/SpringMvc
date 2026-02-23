@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/pets")
 public class PetController {
+
     private final PetService petService;
 
     public PetController(PetService petService) {
@@ -25,8 +26,8 @@ public class PetController {
 
     @PostMapping
     public ResponseEntity<PetDTO> createPet(@Valid @RequestBody PetDTO petDTO) {
-    petService.savePet(petDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(petDTO);
+        petService.savePet(petDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(petDTO);
     }
 
     @GetMapping("/{id}")

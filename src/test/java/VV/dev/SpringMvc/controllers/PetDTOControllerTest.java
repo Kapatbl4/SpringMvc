@@ -35,7 +35,8 @@ class PetDTOControllerTest {
     @Autowired
     private UserService userService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setup() {

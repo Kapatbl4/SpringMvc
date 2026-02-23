@@ -1,6 +1,5 @@
 package VV.dev.SpringMvc.service;
 
-import VV.dev.SpringMvc.custom_exceptions.user.UserNotFoundException;
 import VV.dev.SpringMvc.model.PetDTO;
 import VV.dev.SpringMvc.model.UserDTO;
 import org.springframework.stereotype.Service;
@@ -8,12 +7,13 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class PetService {
-    private Map<Long, PetDTO> pets;
-    private Long nextId = 0L;
-    private UserService userService;
+    private final Map<Long, PetDTO> pets;
+    private final AtomicLong nextId = new AtomicLong(0L);
+    private final UserService userService;
 
     public PetService(UserService userService) {
         this.pets = new HashMap<>();
@@ -22,10 +22,7 @@ public class PetService {
 
     public PetDTO savePet(PetDTO petDTO) {
         UserDTO userDTO = userService.findUserById(petDTO.getUserId());
-        if (userDTO == null) {
-            throw new UserNotFoundException("Невозможно назначить пользователя: пользователь не найден");
-        }
-        petDTO.setId(++nextId);
+        petDTO.setId(nextId.incrementAndGet());
         pets.put(petDTO.getId(), petDTO);
         userDTO.getPets().add(petDTO);
         userService.updateUser(userDTO.getId(), userDTO);
@@ -39,9 +36,6 @@ public class PetService {
         }
         UserDTO oldUserDTO = userService.findUserById(currentPetDTO.getUserId());
         UserDTO newUserDTO = userService.findUserById(petDTO.getUserId());
-        if (newUserDTO == null) {
-            throw new UserNotFoundException("Невозможно назначить пользователя: пользователь не найден");
-        }
         petDTO.setId(id);
         pets.put(id, petDTO);
         if (!oldUserDTO.equals(newUserDTO)) {

@@ -1,4 +1,4 @@
-package VV.dev.SpringMvc;
+package VV.dev.SpringMvc.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

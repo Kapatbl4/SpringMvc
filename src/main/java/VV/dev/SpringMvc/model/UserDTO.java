@@ -12,7 +12,6 @@ import java.util.Objects;
 public class UserDTO {
     private Long id;
 
-    @NotNull
     @NotBlank
     private String name;
 
@@ -25,7 +24,7 @@ public class UserDTO {
     @Max(130)
     private Integer age;
 
-    private List<PetDTO> petDTOS;
+    private List<PetDTO> pets;
 
     public UserDTO(String name, String email, Integer age) {
         this.name = name;
@@ -66,11 +65,11 @@ public class UserDTO {
     }
 
     public List<PetDTO> getPets() {
-        return petDTOS;
+        return pets;
     }
 
     public void setPets(List<PetDTO> petDTOS) {
-        this.petDTOS = petDTOS;
+        this.pets = petDTOS;
     }
 
     @Override

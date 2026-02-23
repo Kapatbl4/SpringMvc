@@ -1,8 +1,8 @@
-package VV.dev.SpringMvc;
+package VV.dev.SpringMvc.exceptions;
 
-import VV.dev.SpringMvc.custom_exceptions.user.UserEmailAlreadyExistsException;
-import VV.dev.SpringMvc.custom_exceptions.user.UserHasPetException;
-import VV.dev.SpringMvc.custom_exceptions.user.UserNotFoundException;
+import VV.dev.SpringMvc.exceptions.custom_exceptions.UserEmailAlreadyExistsException;
+import VV.dev.SpringMvc.exceptions.custom_exceptions.UserHasPetException;
+import VV.dev.SpringMvc.exceptions.custom_exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     private final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFound(NoSuchElementException ex) {
+    public ResponseEntity<ErrorResponse> handleNoSuchElement(NoSuchElementException ex) {
         log.error("Got bad request exception", ex);
         var errorResponse = new ErrorResponse(
                 "Сущность не найдена",

@@ -28,12 +28,13 @@ class UserDTOControllerTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     void setup() {
         userService.clear();
     }
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void createUser() throws Exception {

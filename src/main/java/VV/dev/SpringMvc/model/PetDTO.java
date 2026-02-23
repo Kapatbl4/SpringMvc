@@ -8,7 +8,6 @@ import java.util.Objects;
 public class PetDTO {
     private Long id;
 
-    @NotNull
     @NotBlank
     private String name;
 

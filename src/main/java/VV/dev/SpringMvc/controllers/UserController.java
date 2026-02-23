@@ -3,7 +3,6 @@ package VV.dev.SpringMvc.controllers;
 import VV.dev.SpringMvc.model.UserDTO;
 import VV.dev.SpringMvc.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,13 +19,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO userDTO1 = userService.saveUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO1);
+        UserDTO createdUser = userService.saveUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping("/{id}")

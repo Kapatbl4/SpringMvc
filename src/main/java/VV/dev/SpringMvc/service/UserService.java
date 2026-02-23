@@ -1,7 +1,7 @@
 package VV.dev.SpringMvc.service;
 
-import VV.dev.SpringMvc.custom_exceptions.user.UserEmailAlreadyExistsException;
-import VV.dev.SpringMvc.custom_exceptions.user.UserHasPetException;
+import VV.dev.SpringMvc.exceptions.custom_exceptions.UserEmailAlreadyExistsException;
+import VV.dev.SpringMvc.exceptions.custom_exceptions.UserHasPetException;
 import VV.dev.SpringMvc.model.UserDTO;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +10,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class UserService {
-    private Map<Long, UserDTO> users;
-    private Long nextId = 0L;
+    private final Map<Long, UserDTO> users;
+    private final AtomicLong nextId = new AtomicLong(0L);
 
     public UserService() {
         this.users = new HashMap<>();
     }
 
     public UserDTO saveUser(UserDTO userDTO) {
-        if (findUserByEmail(userDTO.getEmail()) != null) {
+        if (findUserByEmail(userDTO.getEmail()).isPresent()) {
             throw new UserEmailAlreadyExistsException("User with email " + userDTO.getEmail() + " already exists");
         }
-        userDTO.setId(++nextId);
+        userDTO.setId(nextId.incrementAndGet());
         if (userDTO.getPets() == null) {
             userDTO.setPets(new ArrayList<>());
         }
@@ -61,11 +63,10 @@ public class UserService {
         users.remove(id);
     }
 
-    public UserDTO findUserByEmail(String email) {
+    public Optional<UserDTO> findUserByEmail(String email) {
         return users.values().stream()
                 .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public List<UserDTO> getAllUsers() {
